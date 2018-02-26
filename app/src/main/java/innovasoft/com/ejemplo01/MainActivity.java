@@ -1,10 +1,16 @@
 package innovasoft.com.ejemplo01;
 
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -34,34 +40,49 @@ public class MainActivity extends AppCompatActivity {
 
     EditText txtEmail;
     EditText txtPassword;
+    Button btnLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        login();
         setContentView(R.layout.activity_main);
+        btnLogin = findViewById(R.id.btnLogin);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                login(view);
+            }
+        });
     }
 
-    private void login() {
-        AsyncTask.execute(new Runnable() {
+    @SuppressLint("StaticFieldLeak")
+    private void login(final View view) {
+
+        new AsyncTask<Void, Void, Void>() {
+            boolean flags = false;
+            ProgressDialog progressDialog;
             @Override
-            public void run() {
-                try
-                {
+            protected Void doInBackground(Void... voids) {
+                try {
+                    Handler handler = new Handler(getApplicationContext().getMainLooper());
+                    txtEmail = findViewById(R.id.txtEmail);
+                    txtPassword = findViewById(R.id.txtPassword);
                     final String url = "http://abrasa.com.ni/api/usuarios";
                     RestTemplate restTemplate = new RestTemplate();
                     restTemplate.getMessageConverters().add(new MyGsonHttpMessageConverter());
                     Usuarios[] datos = restTemplate.getForObject(url, Usuarios[].class);
-                    for(int i=0; i<datos.length; i++){
-                        Log.i(" --Usuario: ", datos[i].getNombre());
+                    for (int i = 0; i < datos.length; i++) {
+                        if (txtEmail.getText().toString().equals(datos[i].getUsuario()) && txtPassword.getText().toString().equals(datos[i].getPassword())) {
+                            flags = true;
+                           // progressDialog.set
+                        }
                     }
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     Log.e("MainActivity", e.getMessage(), e);
                 }
+                return null;
             }
-
-        });
+        };
     }
 
 }
