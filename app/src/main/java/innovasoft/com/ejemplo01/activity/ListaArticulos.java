@@ -7,8 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
@@ -20,22 +18,24 @@ import innovasoft.com.ejemplo01.models.Articulos;
 
 public class ListaArticulos extends AppCompatActivity {
 
-    private Articulos[] listaArticulos;
+    private Articulos[] listaArticulos=null;
     private RecyclerView recyclerView;
-    ArticuloAdapter articuloAdapter = new ArticuloAdapter();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_articulos);
         cargarArticulos();
+        ArticuloAdapter articuloAdapter = new ArticuloAdapter(getApplicationContext(),listaArticulos);
         recyclerView = findViewById(R.id.rvArticulos);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(articuloAdapter);
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void cargarArticulos(){
-        new AsyncTask<Void, Void, Articulos[]>(){
+    private void cargarArticulos() {
+        new AsyncTask<Void, Void, Articulos[]>() {
             @Override
             protected Articulos[] doInBackground(Void... voids) {
                 try {
@@ -43,9 +43,9 @@ public class ListaArticulos extends AppCompatActivity {
                     RestTemplate restTemplate = new RestTemplate();
                     restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
                     restTemplate.getMessageConverters().add(new MyGsonHttpMessageConverter());
-                    listaArticulos = restTemplate.getForObject(url,Articulos[].class);
-                    for (int i =0; i<listaArticulos.length;i++){
-                        Log.i("Articulo " + listaArticulos[i].getIdarticulo(),"Descripcion: " + listaArticulos[i].getDescripcion());
+                    listaArticulos = restTemplate.getForObject(url, Articulos[].class);
+                    for (int i = 0; i < listaArticulos.length; i++) {
+                        Log.i("Articulo " + listaArticulos[i].getIdarticulo(), "Descripcion: " + listaArticulos[i].getDescripcion());
                     }
                     return listaArticulos;
                 } catch (Exception e) {
@@ -53,9 +53,10 @@ public class ListaArticulos extends AppCompatActivity {
                     return new Articulos[0];
                 }
             }
+
             @Override
-            protected void onPostExecute(Articulos[] arrayArticulos){
-                articuloAdapter.setDatos(arrayArticulos);
+            protected void onPostExecute(Articulos[] arrayArticulos) {
+                listaArticulos = arrayArticulos;
             }
         }.execute();
 

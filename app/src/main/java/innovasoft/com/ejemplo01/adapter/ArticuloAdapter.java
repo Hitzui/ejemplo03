@@ -1,6 +1,8 @@
 package innovasoft.com.ejemplo01.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,30 +20,33 @@ import innovasoft.com.ejemplo01.models.Articulos;
 public class ArticuloAdapter extends RecyclerView.Adapter<ArticuloAdapter.MyViewHolder> {
 
     public Articulos[] datos;
+    Context context;
     private ImageConverterFromUrl imageConverterFromUrl = new ImageConverterFromUrl();
 
-    public ArticuloAdapter() {
-
+    public ArticuloAdapter(Context context, Articulos[] datos) {
+        this.context = context;
+        this.datos = datos;
     }
 
     public void setDatos(Articulos[] datos) {
         this.datos = datos;
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView lblDescripcion;
         public ImageView imgArticulo;
 
         public MyViewHolder(View view) {
             super(view);
-            lblDescripcion = view.findViewById(R.id.title);
+            lblDescripcion = view.findViewById(R.id.lblDescripcionArticulo);
             imgArticulo = view.findViewById(R.id.imgArticulo);
         }
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.articulos_rows, viewGroup, false);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View v = inflater.inflate(R.layout.articulos_rows, null);
         MyViewHolder pvh = new MyViewHolder(v);
         return pvh;
     }
