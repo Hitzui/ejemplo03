@@ -20,8 +20,12 @@ public class ArticuloAdapter extends RecyclerView.Adapter<ArticuloAdapter.MyView
     public Articulos[] datos;
     private ImageConverterFromUrl imageConverterFromUrl = new ImageConverterFromUrl();
 
-    public ArticuloAdapter(Articulos[] lista) {
-        this.datos = lista;
+    public ArticuloAdapter() {
+
+    }
+
+    public void setDatos(Articulos[] datos) {
+        this.datos = datos;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
