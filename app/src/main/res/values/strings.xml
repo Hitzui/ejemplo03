@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Sistema Gestion</string>
     <string name="login">Iniciar Sesion</string>
+    <string name="title_activity_lista_articulos">ListaArticulos</string>
+    <string name="imgDescArticulo">img</string>
+    <string name="descripcion_del_articulo">Descripcion del articulo</string>
 </resources>

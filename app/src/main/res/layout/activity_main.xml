@@ -12,8 +12,10 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
         android:text="@string/login"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
         android:textSize="24sp" />
 
     <EditText

@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="innovasoft.com.ejemplo01">
 
+    <uses-sdk
+        android:minSdkVersion="7"
+        android:targetSdkVersion="19" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
@@ -11,10 +15,9 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <uses-sdk
-        android:minSdkVersion="7"
-        android:targetSdkVersion="19" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -29,6 +32,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.ListaArticulos"
+            android:label="@string/title_activity_lista_articulos"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
