@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -31,39 +30,19 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View view) {
-                final boolean result = login(view);
-                Thread thread = new Thread() {
-                    @Override
-                    public void run() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (result) {
-                                    Intent intent = new Intent(getApplicationContext(), ListaArticulos.class);
-                                    startActivity(intent);
-                                } else {
-                                    Toast.makeText(getApplicationContext(),
-                                            "Usuario o contraseña incorrectas, intente nuevamente",
-                                            Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
-                    }
-                };
-                thread.start();
+            public void onClick(View view) {
+                login();
             }
         });
     }
 
     @SuppressLint("StaticFieldLeak")
-    private boolean login(final View view) {
-        final boolean[] flags = {false};
-        new AsyncTask<Void, Void, Void>() {
+    private void login() {
+        new AsyncTask<Void, Void, Usuarios>() {
             @Override
-            protected Void doInBackground(Void... voids) {
+            protected Usuarios doInBackground(Void... voids) {
                 try {
-                    Handler handler = new Handler(getApplicationContext().getMainLooper());
+                    //Handler handler = new Handler(getApplicationContext().getMainLooper());
                     txtEmail = findViewById(R.id.txtEmail);
                     txtPassword = findViewById(R.id.txtPassword);
                     final String url = "http://abrasa.com.ni/api/usuarios";
@@ -71,9 +50,8 @@ public class MainActivity extends AppCompatActivity {
                     restTemplate.getMessageConverters().add(new MyGsonHttpMessageConverter());
                     Usuarios[] datos = restTemplate.getForObject(url, Usuarios[].class);
                     for (int i = 0; i < datos.length; i++) {
-                        if (txtEmail.getText().toString().equals(datos[i].getUsuario()) && txtPassword.getText().toString().equals(datos[i].getPassword())) {
-                            Log.i("Usuario encontrado: ", datos[i].getNombre());
-                            flags[0] = true;
+                        if (txtEmail.getText().toString().equals(datos[i].getUsuario())) {
+                            return datos[i];
                         }
                     }
                 } catch (Exception e) {
@@ -81,8 +59,22 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return null;
             }
-        };
-        return flags[0];
-    }
 
+            @Override
+            protected void onPostExecute(final Usuarios usuario) {
+                txtPassword = findViewById(R.id.txtPassword);
+                if (usuario.getPassword().equals(txtPassword.getText().toString())) {
+                    Log.i("Usuario: ", usuario.getNombre());
+                    Intent intent = new Intent(getApplicationContext(), ListaArticulos.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "Usuario o contraseña incorrectas, intente nuevamente",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+
+        }.execute();
+
+    }
 }

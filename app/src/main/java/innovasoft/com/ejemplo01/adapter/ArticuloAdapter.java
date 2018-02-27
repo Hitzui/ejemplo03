@@ -18,7 +18,7 @@ import innovasoft.com.ejemplo01.models.Articulos;
 public class ArticuloAdapter extends RecyclerView.Adapter<ArticuloAdapter.MyViewHolder> {
 
     public Articulos[] datos;
-    ImageConverterFromUrl imageConverterFromUrl = new ImageConverterFromUrl();
+    private ImageConverterFromUrl imageConverterFromUrl = new ImageConverterFromUrl();
 
     public ArticuloAdapter(Articulos[] lista) {
         this.datos = lista;

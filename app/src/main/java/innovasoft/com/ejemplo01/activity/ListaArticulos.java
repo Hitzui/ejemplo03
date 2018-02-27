@@ -1,21 +1,16 @@
 package innovasoft.com.ejemplo01.activity;
 
+import android.annotation.SuppressLint;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import innovasoft.com.ejemplo01.R;
@@ -36,21 +31,35 @@ public class ListaArticulos extends AppCompatActivity {
         cargarArticulos();
         ArticuloAdapter articuloAdapter = new ArticuloAdapter(listaArticulos);
         recyclerView = findViewById(R.id.rvArticulos);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(articuloAdapter);
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void cargarArticulos(){
-        try {
-            final String url = "http://abrasa.com.ni/api/articulo";
-            RestTemplate restTemplate = new RestTemplate();
-            restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
-            restTemplate.getMessageConverters().add(new MyGsonHttpMessageConverter());
-            String result = restTemplate.getForObject(url, String.class);
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            Gson gson = gsonBuilder.create();
-            listaArticulos = gson.fromJson(result, Articulos[].class);
-        } catch (Exception e) {
-            Log.e("MainActivity", e.getMessage(), e);
-        }
+        new AsyncTask<Void, Void, Articulos[]>(){
+            @Override
+            protected Articulos[] doInBackground(Void... voids) {
+                try {
+                    final String url = "http://abrasa.com.ni/api/articulo";
+                    RestTemplate restTemplate = new RestTemplate();
+                    restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+                    restTemplate.getMessageConverters().add(new MyGsonHttpMessageConverter());
+                    listaArticulos = restTemplate.getForObject(url,Articulos[].class);
+                    for (int i =0; i<listaArticulos.length;i++){
+                        Log.i("Articulo " + listaArticulos[i].getIdarticulo(),"Descripcion: " + listaArticulos[i].getDescripcion());
+                    }
+                    return listaArticulos;
+                } catch (Exception e) {
+                    Log.e("MainActivity", e.getMessage(), e);
+                    return new Articulos[0];
+                }
+            }
+            @Override
+            protected void onPostExecute(Articulos[] arrayArticulos){
+                listaArticulos = arrayArticulos;
+            }
+        }.execute();
+
     }
 }
