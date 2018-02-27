@@ -18,16 +18,15 @@ import innovasoft.com.ejemplo01.models.Articulos;
 
 public class ListaArticulos extends AppCompatActivity {
 
-    private Articulos[] listaArticulos=null;
+    private Articulos[] listaArticulos = null;
     private RecyclerView recyclerView;
-
+    ArticuloAdapter articuloAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_articulos);
         cargarArticulos();
-        ArticuloAdapter articuloAdapter = new ArticuloAdapter(getApplicationContext(),listaArticulos);
         recyclerView = findViewById(R.id.rvArticulos);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(articuloAdapter);
@@ -56,7 +55,7 @@ public class ListaArticulos extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(Articulos[] arrayArticulos) {
-                listaArticulos = arrayArticulos;
+                articuloAdapter = new ArticuloAdapter(getApplicationContext(), arrayArticulos);
             }
         }.execute();
 
