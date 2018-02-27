@@ -1,7 +1,6 @@
 package innovasoft.com.ejemplo01;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 };
-
+                thread.start();
             }
         });
     }
@@ -61,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean login(final View view) {
         final boolean[] flags = {false};
         new AsyncTask<Void, Void, Void>() {
-            ProgressDialog progressDialog;
-
             @Override
             protected Void doInBackground(Void... voids) {
                 try {
@@ -75,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
                     Usuarios[] datos = restTemplate.getForObject(url, Usuarios[].class);
                     for (int i = 0; i < datos.length; i++) {
                         if (txtEmail.getText().toString().equals(datos[i].getUsuario()) && txtPassword.getText().toString().equals(datos[i].getPassword())) {
+                            Log.i("Usuario encontrado: ", datos[i].getNombre());
                             flags[0] = true;
-                            // progressDialog.set
                         }
                     }
                 } catch (Exception e) {
