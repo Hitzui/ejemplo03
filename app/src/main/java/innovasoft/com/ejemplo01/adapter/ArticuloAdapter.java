@@ -1,6 +1,8 @@
 package innovasoft.com.ejemplo01.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +19,14 @@ import innovasoft.com.ejemplo01.models.Articulos;
  * Created by josemiguel on 26/02/2018.
  */
 
-public class ArticuloAdapter extends BaseAdapter{
+public class ArticuloAdapter extends BaseAdapter {
 
     private Context context;
     private Articulos[] listaArticulos;
     private LayoutInflater layoutInflater;
     private ImageConverterFromUrl imageConverterFromUrl;
     private String url;
+    ImageView imgArticulo;
 
     public ArticuloAdapter(Context context, Articulos[] listaArticulos) {
         this.context = context;
@@ -31,6 +34,7 @@ public class ArticuloAdapter extends BaseAdapter{
         this.layoutInflater = LayoutInflater.from(context);
         imageConverterFromUrl = new ImageConverterFromUrl();
     }
+
     @Override
     public int getCount() {
         return listaArticulos.length;
@@ -51,11 +55,11 @@ public class ArticuloAdapter extends BaseAdapter{
         Articulos articulo = listaArticulos[i];
         convertView = layoutInflater.inflate(R.layout.articulos_rows, null);
         TextView lblDescripcion = convertView.findViewById(R.id.lblDescripcionArticulo);
-        ImageView imgArticulo = convertView.findViewById(R.id.imgArticulo);
+        imgArticulo = convertView.findViewById(R.id.imgArticulo);
         lblDescripcion.setText(articulo.getDescripcion());
-        Log.i("Ruta de la imagen: ",articulo.getRutaimg());
-        String url = "http://abrasa.com.ni"+articulo.getRutaimg();
-        imageConverterFromUrl.loadImageFromURL(url,imgArticulo);
+        Log.i("Ruta de la imagen: ", articulo.getRutaimg());
+        String url = "http://abrasa.com.ni" + articulo.getRutaimg();
+        imgArticulo.setImageBitmap(imageConverterFromUrl.loadImageFromURL(url));
         return convertView;
     }
 }

@@ -1,5 +1,6 @@
 package innovasoft.com.ejemplo01.converter;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.ImageView;
 
@@ -20,18 +21,17 @@ public class ImageConverterFromUrl {
         this.imageView = imageView;
     }
 
-    public void loadImageFromURL(String fileUrl, ImageView iv) {
+    public Bitmap loadImageFromURL(String fileUrl) {
         try {
             URL myFileUrl = new URL(fileUrl);
             HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
             conn.setDoInput(true);
             conn.connect();
             InputStream is = conn.getInputStream();
-            iv.setImageBitmap(BitmapFactory.decodeStream(is));
-        } catch (MalformedURLException e) {
+            return  BitmapFactory.decodeStream(is);
+        }catch (Exception e) {
             e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
     }
 }

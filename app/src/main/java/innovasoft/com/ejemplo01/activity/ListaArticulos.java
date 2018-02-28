@@ -30,12 +30,7 @@ public class ListaArticulos extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                cargarArticulos();
-            }
-        });
+        cargarArticulos();
         listViewArticulos = findViewById(R.id.listViewArticulos);
         ArticuloAdapter articuloAdapter = new ArticuloAdapter(getApplicationContext(), listaArticulos);
         listViewArticulos.setAdapter(articuloAdapter);
@@ -62,9 +57,8 @@ public class ListaArticulos extends AppCompatActivity {
 
     private void cargarArticulos() {
         try {
-            if(android.os.Build.VERSION.SDK_INT>9)
-            {
-                StrictMode.ThreadPolicy policy=new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            if (android.os.Build.VERSION.SDK_INT > 9) {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
             }
             final String url = "http://abrasa.com.ni/api/articulo";
