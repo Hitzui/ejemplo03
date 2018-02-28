@@ -5,6 +5,7 @@ import android.widget.ImageView;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -19,17 +20,21 @@ public class ImageConverterFromUrl {
         this.imageView = imageView;
     }
 
-    public ImageView imageConverter(String url) {
+    public boolean loadImageFromURL(String fileUrl, ImageView iv) {
         try {
-            URL myFileUrl = new URL(url);
+
+            URL myFileUrl = new URL(fileUrl);
             HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
             conn.setDoInput(true);
             conn.connect();
             InputStream is = conn.getInputStream();
-            imageView.setImageBitmap(BitmapFactory.decodeStream(is));
-            return imageView;
+            iv.setImageBitmap(BitmapFactory.decodeStream(is));
+            return true;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         } catch (Exception e) {
-            return  null;
+            e.printStackTrace();
         }
+        return false;
     }
 }
