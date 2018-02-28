@@ -4,4 +4,5 @@
     <string name="title_activity_lista_articulos">ListaArticulos</string>
     <string name="imgDescArticulo">img</string>
     <string name="descripcion_del_articulo">Descripcion del articulo</string>
+    <string name="login_email">Login</string>
 </resources>
