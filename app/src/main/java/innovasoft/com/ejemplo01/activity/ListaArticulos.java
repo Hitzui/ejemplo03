@@ -1,5 +1,6 @@
 package innovasoft.com.ejemplo01.activity;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
@@ -30,10 +31,7 @@ public class ListaArticulos extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        cargarArticulos();
-        listViewArticulos = findViewById(R.id.listViewArticulos);
-        ArticuloAdapter articuloAdapter = new ArticuloAdapter(getApplicationContext(), listaArticulos);
-        listViewArticulos.setAdapter(articuloAdapter);
+        new RequestAsyncTask().execute();
     }
 
     @Override
@@ -57,10 +55,10 @@ public class ListaArticulos extends AppCompatActivity {
 
     private void cargarArticulos() {
         try {
-            if (android.os.Build.VERSION.SDK_INT > 9) {
+            /*if (android.os.Build.VERSION.SDK_INT > 9) {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
-            }
+            }*/
             final String url = "http://abrasa.com.ni/api/articulo";
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
@@ -70,6 +68,32 @@ public class ListaArticulos extends AppCompatActivity {
             Log.e("MainActivity", e.getMessage(), e);
         }
     }
+    public class RequestAsyncTask extends AsyncTask<Void, Void,Articulos[]>{
 
+        @Override
+        protected Articulos[] doInBackground(Void... voids) {
+            try {
+            /*if (android.os.Build.VERSION.SDK_INT > 9) {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+            }*/
+                final String url = "http://abrasa.com.ni/api/articulo";
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+                restTemplate.getMessageConverters().add(new MyGsonHttpMessageConverter());
+                return restTemplate.getForObject(url, Articulos[].class);
+            } catch (Exception e) {
+                Log.e("MainActivity", e.getMessage(), e);
+                return null;
+            }
+        }
+        @Override
+        protected void onPostExecute(Articulos[] articulos){
+            listaArticulos = articulos;
+            listViewArticulos = findViewById(R.id.listViewArticulos);
+            ArticuloAdapter articuloAdapter = new ArticuloAdapter(getApplicationContext(), listaArticulos);
+            listViewArticulos.setAdapter(articuloAdapter);
+        }
+    }
 
 }

@@ -8,7 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import innovasoft.com.ejemplo01.R;
+import innovasoft.com.ejemplo01.converter.RequestDataArticulos;
 import innovasoft.com.ejemplo01.models.Articulos;
 
 /**
@@ -30,9 +33,14 @@ public class ArticuloAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         try {
+            RequestDataArticulos requestDataArticulos = new RequestDataArticulos();
             view = inflater.inflate(R.layout.articulos_rows,null);
             TextView lblDescripcion = view.findViewById(R.id.lblDescripcionArticulo);
             ImageView imageView = view.findViewById(R.id.imgArticulo);
+            lblDescripcion.setText(datos[i].getDescripcion());
+            String url = "http://abrasa.com.ni"+datos[i].getRutaimg();
+            Glide.with(view).load(url).into(imageView);
+            //imageView.setImageBitmap(requestDataArticulos.loadImageFromURL(url));
             return view;
         } catch (Exception e) {
             return null;
@@ -41,7 +49,7 @@ public class ArticuloAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 0;
+        return datos.length;
     }
 
     @Override
