@@ -1,9 +1,6 @@
 package innovasoft.com.ejemplo01.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import innovasoft.com.ejemplo01.R;
-import innovasoft.com.ejemplo01.converter.ImageConverterFromUrl;
 import innovasoft.com.ejemplo01.models.Articulos;
 
 /**
@@ -22,22 +18,30 @@ import innovasoft.com.ejemplo01.models.Articulos;
 public class ArticuloAdapter extends BaseAdapter {
 
     private Context context;
-    private Articulos[] listaArticulos;
-    private LayoutInflater layoutInflater;
-    private ImageConverterFromUrl imageConverterFromUrl;
-    private String url;
-    ImageView imgArticulo;
+    private Articulos[] datos;
+    LayoutInflater inflater;
 
-    public ArticuloAdapter(Context context, Articulos[] listaArticulos) {
+    public ArticuloAdapter(Context context, Articulos[] datos) {
         this.context = context;
-        this.listaArticulos = listaArticulos;
-        this.layoutInflater = LayoutInflater.from(context);
-        imageConverterFromUrl = new ImageConverterFromUrl();
+        this.datos = datos;
+        inflater = LayoutInflater.from(context);
+    }
+
+    @Override
+    public View getView(int i, View view, ViewGroup viewGroup) {
+        try {
+            view = inflater.inflate(R.layout.articulos_rows,null);
+            TextView lblDescripcion = view.findViewById(R.id.lblDescripcionArticulo);
+            ImageView imageView = view.findViewById(R.id.imgArticulo);
+            return view;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public int getCount() {
-        return listaArticulos.length;
+        return 0;
     }
 
     @Override
@@ -50,16 +54,4 @@ public class ArticuloAdapter extends BaseAdapter {
         return 0;
     }
 
-    @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
-        Articulos articulo = listaArticulos[i];
-        convertView = layoutInflater.inflate(R.layout.articulos_rows, null);
-        TextView lblDescripcion = convertView.findViewById(R.id.lblDescripcionArticulo);
-        imgArticulo = convertView.findViewById(R.id.imgArticulo);
-        lblDescripcion.setText(articulo.getDescripcion());
-        Log.i("Ruta de la imagen: ", articulo.getRutaimg());
-        String url = "http://abrasa.com.ni" + articulo.getRutaimg();
-        imgArticulo.setImageBitmap(imageConverterFromUrl.loadImageFromURL(url));
-        return convertView;
-    }
 }
