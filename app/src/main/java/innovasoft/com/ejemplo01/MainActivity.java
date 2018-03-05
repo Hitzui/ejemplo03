@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +14,7 @@ import android.widget.Toast;
 
 import org.springframework.web.client.RestTemplate;
 
-import innovasoft.com.ejemplo01.activity.ListaArticulos;
+import innovasoft.com.ejemplo01.activity.PrincipalActivity;
 import innovasoft.com.ejemplo01.converter.MyGsonHttpMessageConverter;
 import innovasoft.com.ejemplo01.models.Usuarios;
 
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         btnLogin = findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 txtPassword = findViewById(R.id.txtPassword);
                 if (usuario.getPassword().equals(txtPassword.getText().toString())) {
                     Log.i("Usuario: ", usuario.getNombre());
-                    Intent intent = new Intent(getApplicationContext(), ListaArticulos.class);
+                    Intent intent = new Intent(getApplicationContext(), PrincipalActivity.class);
                     startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(),
