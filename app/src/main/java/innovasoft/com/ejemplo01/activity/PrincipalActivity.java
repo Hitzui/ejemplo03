@@ -1,12 +1,15 @@
 package innovasoft.com.ejemplo01.activity;
 
+
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import innovasoft.com.ejemplo01.R;
@@ -17,7 +20,7 @@ import innovasoft.com.ejemplo01.R;
 
 public class PrincipalActivity extends AppCompatActivity {
 
-
+    NavigationView navigation;
     private DrawerLayout mDrawerLayout;
 
     @Override
@@ -30,7 +33,24 @@ public class PrincipalActivity extends AppCompatActivity {
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         mDrawerLayout = findViewById(R.id.drawer_layout);
-
+        navigation = (NavigationView) findViewById(R.id.nav_view);
+        navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                Fragment fragment = null;
+                switch (id) {
+                    case R.id.nav_gallery:
+                        fragment = new GaleriaFragment();
+                        break;
+                }
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame, fragment)
+                        .addToBackStack(null)
+                        .commit();
+                return true;
+            }
+        });
     }
 
 
@@ -43,4 +63,5 @@ public class PrincipalActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

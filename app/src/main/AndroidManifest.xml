@@ -36,6 +36,10 @@
             android:name=".activity.PrincipalActivity"
             android:label="@string/title_activity_lista_articulos"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activity.ListaArticulos"
+            android:label="@string/title_activity_lista_articulos"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -7,11 +7,5 @@
     tools:context="innovasoft.com.ejemplo01.activity.ListaArticulos">
 
 
-    <ListView
-        android:id="@+id/listViewArticulos"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@color/material_blue_grey_800"
-        android:dividerHeight="1dp"
-        android:footerDividersEnabled="false"/>
+
 </LinearLayout>

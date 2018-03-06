@@ -4,10 +4,13 @@
     android:layout_height="match_parent"
     tools:context="innovasoft.com.ejemplo01.activity.GaleriaFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/listViewArticulos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_marginTop="60dp"
+        android:divider="@color/colorPrimaryDark"
+        android:dividerHeight="1dp"
+        android:footerDividersEnabled="false" />
 
 </FrameLayout>
